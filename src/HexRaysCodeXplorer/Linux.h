@@ -1,4 +1,4 @@
-/*	Copyright (c) 2014
+/*	Copyright (c) 2013-2015
 	REhints <info@rehints.com>
 	All rights reserved.
 	
@@ -24,28 +24,39 @@
 
 #pragma once
 
-#include <Windows.h>
-#include <tchar.h>
-#include <iterator>
-#include <string>
-#include <vector>
-#include <list>
-#include <map>
-#include <iostream>
+#if defined (__LINUX__) || defined (__MAC__)
 
+#pragma GCC diagnostic ignored "-fpermissive"
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
-using namespace std;
+#include <stdint.h>
+#define UINT uint32_t
+#define PUINT uint32_t *
+#define CHAR int8_t
+#define UCHAR uint8_t
+#define TCHAR uint8_t
+#define WCHAR wchar_t
+#define BOOL bool
+#define TRUE true
+#define FALSE false
+#define LPCSTR char *const
+#define LPCTSTR char *const
+#define LPSTR char *
+#define WORD uint16_t
+#define DWORD uint32_t
+#define PDWORD DWORD*
+#define PVOID void*
+#define PINT int*
+#define UINT64 uint64_t
 
-typedef std::basic_string<TCHAR>	TSTRING;
-typedef std::basic_string<WCHAR>	WSTRING;
-typedef std::basic_string<CHAR>		ASTRING;
-typedef std::vector<UCHAR>			BUFFER;
+#define ZeroMemory(dst, length) 	memset(dst, 0, length)
 
-#ifdef _UNICODE
-#define tcout						std::wcout
-#else
-#define tcout						std::cout
+/* Those are header annotations in Visual Studio and can be safely ignored */
+#define IN
+#define OUT
+#define __bcount(element) 
+
+/* Ugly but ... */
+#define sprintf_s snprintf
+#define _snprintf snprintf
 #endif
-
-
-bool idaapi reconstruct_type(void *ud);

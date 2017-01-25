@@ -1,4 +1,4 @@
-/*	Copyright (c) 2014
+/*	Copyright (c) 2013-2015
 	REhints <info@rehints.com>
 	All rights reserved.
 	
@@ -21,6 +21,9 @@
 
 	==============================================================================
 */
+
+#ifndef __H_GRAPHBUILDER__
+#define __H_GRAPHBUILDER__
 
 #pragma once
 
@@ -124,3 +127,5 @@ public:
   static void destroy(graph_info_t *gi);
   static bool get_title(ea_t func_ea, size_t num_inst, qstring *out);
 };
+
+#endif

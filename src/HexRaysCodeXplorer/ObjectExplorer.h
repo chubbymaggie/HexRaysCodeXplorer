@@ -1,4 +1,4 @@
-/*	Copyright (c) 2014
+/*	Copyright (c) 2013-2015
 	REhints <info@rehints.com>
 	All rights reserved.
 	
@@ -22,16 +22,11 @@
 	==============================================================================
 */
 
-#pragma once
-
-#include "ida.hpp"
-#include "netnode.hpp"
-#include <kernwin.hpp>
-
-#include <windows.h>
+#ifndef __H_OBJECTEXPLORER__
+#define __H_OBJECTEXPLORER__
 
 
-// Object Explorer From Init
+// Object Explorer Form Init
 struct object_explorer_info_t
 {
 	TForm *form;
@@ -47,7 +42,7 @@ void object_explorer_form_init();
 // VTBL 
 struct VTBL_info_t
 {
-	char vtbl_name[MAXSTR];
+	qstring vtbl_name;
 	ea_t ea_begin;
 	ea_t ea_end;
 	UINT methods;
@@ -59,11 +54,11 @@ extern qvector <qstring> vtbl_list;
 extern qvector <qstring>::iterator vtbl_iter;
 
 
-BOOL get_vtbl_info(ea_t ea_address, VTBL_info_t &vtbl_info);
+
 inline BOOL is_valid_name(LPCSTR name){ return(*((PDWORD) name) == 0x375F3F3F /*"??_7"*/); }
 void parse_vft_members(LPCTSTR name, ea_t ea_start, ea_t ea_end);
 
-void search_objects();
+void search_objects(bool bForce = true);
 
 
 template <class T> BOOL verify_32_t(ea_t ea_ptr, T &rvalue)
@@ -135,4 +130,10 @@ ea_t find_RTTI(ea_t start_ea, ea_t end_ea);
 char* get_demangle_name(ea_t class_addr);
 void process_rtti();
 
-LPCTSTR get_text_disasm(ea_t ea);
+const char * get_text_disasm(ea_t ea);
+
+bool get_vbtbl_by_ea(ea_t vtbl_addr, VTBL_info_t &vtbl);
+
+tid_t create_vtbl_struct(ea_t vtbl_addr, ea_t vtbl_addr_end, char* vtbl_name, uval_t idx, unsigned int* vtbl_len = NULL);
+
+#endif
